@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react'
+import './Chat.css'
+import { v4 as uuidv4 } from "uuid";
+
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:3001")
+socket.on('connect', () => console.log("A new user has been connected"))
+
+const myId = uuidv4()
 
 const Chat = () => {
 
     const [message, setMessage] = useState("")
-    const [lista, setLista] = useState(["1"])
+    const [lista, setLista] = useState([])
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault()  
+        
         socket.emit("send.message", {
-            message: message
-        })
-        setLista(...lista, {
-            id: 1,
+            id: myId,
             message
         })
+
+       /*   setLista([... lista, {
+            id: myId,
+            message
+        }])  */
         setMessage("")
     }
 
@@ -25,10 +34,15 @@ const Chat = () => {
 
     
     useEffect(() => {
-        socket.on("receive.message", data => {
-            alert(data.message)
-        })
-    }, [socket])
+        console.log("alou")
+
+        const handleNewMessage = newMessage =>
+            setLista([...lista, newMessage])
+        
+            console.log("A lista é: " + lista)
+        socket.on('send.message', handleNewMessage)
+        return () => socket.off('send.message', handleNewMessage)
+    }, [lista])
 
   return (
     <div>
@@ -39,9 +53,11 @@ const Chat = () => {
         </form>
        
        <ul>
-            {/* {lista.map((m) => (
-                <li key={m.id}>{m.message}</li>
-            ))} */}
+            {lista.map((item, index) => (
+                <li key={index} className={item.id === myId ? "list-mine" : "list-other"}>
+                    <span className={item.id === myId ? "mine" : "other"}>{item.message}</span>
+                </li>
+            ))}
        </ul>
     </div>
   )

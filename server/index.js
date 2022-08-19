@@ -16,11 +16,12 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-    console.log("Someone has been conected to the server!")
+    console.log( socket.id + " has been conected to the server!")
 
     socket.on("send.message", (data) => {
         console.log(data)
-        socket.broadcast.emit("receive.message", data)
+        //socket.broadcast.emit("send.message", data)
+        io.emit("send.message", data)
     })
 })
 

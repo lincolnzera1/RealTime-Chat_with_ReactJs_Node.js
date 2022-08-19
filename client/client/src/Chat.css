@@ -1,0 +1,37 @@
+ul li{
+    list-style: none;
+    
+    font-size: 40px;
+}
+
+
+.mine{
+    border: 3px solid black;
+    border-width: 4px;
+    background-color: lightcoral;
+    padding: 25px 70px;
+    
+
+}
+
+.other{
+    border: 3px solid black;
+    border-width: 4px;
+    background-color: lightblue;
+    padding: 25px 70px;
+    
+}
+
+.pad{
+    margin-bottom: 60px;
+}
+
+.list-mine{
+    margin-bottom: 70px;
+    text-align: end;
+}
+
+.list-other{
+    margin-bottom: 70px;
+    text-align: start;
+}
